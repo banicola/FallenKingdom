@@ -1,4 +1,33 @@
 world: world
 spawn:
+  x: 0
+  y: -1
+  z: 0
+
+min_team: 2
+size_team: 4
 team:
-    
+    RED:
+      base:
+        x: 0
+        y: -1
+        z: 0
+      players: []
+    BLUE:
+      base:
+        x: 0
+        y: -1
+        z: 0
+      players: []
+    GREEN:
+      base:
+        x: 0
+        y: -1
+        z: 0
+      players: []
+    PURPLE:
+      base:
+        x: 0
+        y: -1
+        z: 0
+      players: []

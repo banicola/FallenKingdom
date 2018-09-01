@@ -1,6 +1,6 @@
 name: FallenKingdom
 main: com.fk.main.Main
-version: 0.1.4
+version: 0.1.6
 description: Plugin Event FallenKingdom
 author: clipsy1
 commands:

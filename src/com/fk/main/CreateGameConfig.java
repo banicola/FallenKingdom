@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CreateGameConfig extends JavaPlugin{
 	
-	public static boolean createSpawn(int x, int y, int z){
+	public static boolean createSpawn(String world, int x, int y, int z){
 		Main.config.set("spawn.x", x);
 		Main.config.set("spawn.y", y);
 		Main.config.set("spawn.z", z);
@@ -20,7 +20,7 @@ public class CreateGameConfig extends JavaPlugin{
 	}
 	
 	public static boolean createTeam(String name, int size){
-		Main.config.set("team", name);
+		Main.config.addDefault("team", name);
 		Main.config.set("team."+name+".size", size);
 		
 		try {
