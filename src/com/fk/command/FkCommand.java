@@ -21,56 +21,80 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 				if(args[0].equalsIgnoreCase("remove")){
 					sender.sendMessage(ChatColor.RED+ args[0]+" command unavailable!");
 					return true;
-				} else if(args[0].equalsIgnoreCase("start")) {
+				} 
+				
+				else if(args[0].equalsIgnoreCase("start")) {
 					if(!Main.config.getString("team").isEmpty()){
-						
+						Main.gameSetup = true;
 					}
-				} else if(args[0].equalsIgnoreCase("create")){
+				} 
+				
+				else if(args[0].equalsIgnoreCase("create")){
 					if(args.length > 1) {
-						if(args.length == 2){
-							if(args[1].equalsIgnoreCase("spawn") && Main.config.getString("spawn").isEmpty()) {
-								if(CreateGameConfig.createSpawn(0, 64, 0)){
-									sender.sendMessage(ChatColor.GREEN+"The spawn has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
-								} else {
-									sender.sendMessage(ChatColor.RED+"The spawn was already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
-									sender.sendMessage(ChatColor.RED+"You can still modify it by using: /fk create spawn <X> <Y> <Z>");
-								}
-							} else if(args[1].equalsIgnoreCase("team")) {
-								sender.sendMessage(ChatColor.RED+"This function isn't available yet !");
-							}
-							
-						} else if(args.length ==  5 && args[1].equalsIgnoreCase("spawn")){
-							int x = 0, y= 60, z = 0;
-							for(int i=2;i<5;i++) {
-								try{
-							        int temp = Integer.parseInt(args[i]);
-							        if(i==3 && (temp>256 || temp<0)){
-							        	sender.sendMessage(ChatColor.RED+"Error: Y isn't in the range 0-256 !");
+						if(args[1].equalsIgnoreCase("team")){
+							int arg3 = 4;
+							if(args.length >= 3){
+								if(args.length == 4) {
+									try{
+										arg3 = Integer.parseInt(args[3]);
+									}catch(Exception e){
+								    	sender.sendMessage(ChatColor.RED+"Usage: /fk create team <name> <nb_players>");
 								        return true;
-							        }
-							        switch(i) {
-								        case 2: x = temp;
-								        		break;
-								        case 3: y = temp;
-								        		break;
-								        case 4: z = temp;
-								        		break;
-							        }
-							        	
-							    }catch(Exception e){
-							    	sender.sendMessage(ChatColor.RED+"Usage: /fk create spawn <X> <Y> <Z>");
-							        return true;
-							    }
+								    }
+								}
+								CreateGameConfig.createTeam(args[2], arg3);
+							} else {
+								sender.sendMessage(ChatColor.RED+"Usage: /fk create team <name> <nb_players>");
+							}							
+						} else if(args[1].equalsIgnoreCase("spawn")){
+							if(args.length == 2){
+								if(Main.config.getString("spawn").isEmpty()) {
+									if(CreateGameConfig.createSpawn(0, 64, 0)){
+										sender.sendMessage(ChatColor.GREEN+"The spawn has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+									} 
+								} else {
+									sender.sendMessage(ChatColor.RED+"The spawn is already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+									sender.sendMessage(ChatColor.RED+"You can still modify it by using: /fk create spawn <X> <Y> <Z>");
+								}							
+							} else if(args.length ==  5){
+								int x = 0, y= 60, z = 0;
+								for(int i=2;i<5;i++) {
+									try{
+								        int temp = Integer.parseInt(args[i]);
+								        if(i==3 && (temp>256 || temp<0)){
+								        	sender.sendMessage(ChatColor.RED+"Error: Y isn't in the range 0-256 !");
+									        return true;
+								        }
+								        switch(i) {
+									        case 2: x = temp;
+									        		break;
+									        case 3: y = temp;
+									        		break;
+									        case 4: z = temp;
+									        		break;
+								        }
+								        	
+								    }catch(Exception e){
+								    	sender.sendMessage(ChatColor.RED+"Usage: /fk create spawn <X> <Y> <Z>");
+								        return true;
+								    }
+								}
+								if(Main.config.getInt("spawn.x")==x && Main.config.getInt("spawn.y")==y &&Main.config.getInt("spawn.z")==z){
+									sender.sendMessage(ChatColor.RED+"The spawn is already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+									return true;
+								}
+								CreateGameConfig.createSpawn(x, y, z);
+								sender.sendMessage(ChatColor.GREEN+"The spawn has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+								
 							}
-							CreateGameConfig.createSpawn(x, y, z);
-							sender.sendMessage(ChatColor.GREEN+"The spawn has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
-							
 						}
 					} else {
 						sender.sendMessage(ChatColor.RED+"Usage: /fk create <spawn | team>");
 						return true;
 					}
-				} else if(args[0].equalsIgnoreCase("team")){
+				} 
+				
+				else if(args[0].equalsIgnoreCase("team")){
 					
 				}
 				

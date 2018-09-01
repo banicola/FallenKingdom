@@ -10,6 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fk.command.FkCommand;
+import com.fk.event.EntityEvent;
 import com.fk.event.PlayerFoodEvent;
 import com.fk.event.PlayerHealthEvent;
 import com.fk.event.PlayerJoinedEvent;
@@ -36,7 +37,8 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerJoinedEvent(), this);
         pm.registerEvents(new PlayerFoodEvent(), this);
         pm.registerEvents(new PlayerHealthEvent(), this);
-		
+        pm.registerEvents(new EntityEvent(), this);
+        
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
     	getCommand("fallenkingdom").setExecutor(fallenkingdomExecutor);
 	}
