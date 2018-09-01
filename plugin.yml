@@ -1,0 +1,11 @@
+name: FallenKingdom
+main: com.fk.main.Main
+version: 0.1
+description: Plugin Event FallenKingdom
+author: clipsy1
+commands:
+    fk:
+        description: FallenKingdom main menu
+        usage: /fk
+        aliases:
+        - fallenkingdom
