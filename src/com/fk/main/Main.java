@@ -2,10 +2,14 @@ package com.fk.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,10 +22,12 @@ import com.fk.event.PlayerNewLoginEvent;
 
 public class Main extends JavaPlugin{
 	
-	
+	public static HashMap<String, List<Player>> playersTeam = new HashMap<String, List<Player>>();
 	
 	public static boolean gameSetup = false;
 	public static boolean gameStatus = false;
+	public static boolean spawnStatus = false;
+	public static boolean teamStatus = false;
 	
 	public static File configFile;
     public static FileConfiguration config;
@@ -41,6 +47,12 @@ public class Main extends JavaPlugin{
         
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
     	getCommand("fallenkingdom").setExecutor(fallenkingdomExecutor);
+    	
+    	if(config.getInt("spawn.y")!=-1 && config.getInt("team.RED.base.y")!=-1 && config.getInt("team.BLUE.base.y")!=-1 && config.getInt("team.GREEN.base.y")!=-1 && config.getInt("team.PURPLE.base.y")!=-1){
+    		spawnStatus = true;
+    		teamStatus = true;
+    		gameSetup = true;;
+    	}
 	}
 
 	public void onDisable(){}
@@ -64,6 +76,19 @@ public class Main extends JavaPlugin{
         } catch (InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getPlayerTeam(Player player){
+		if(Main.playersTeam.get("blue").contains(player)){
+			return "blue";
+		} else if(Main.playersTeam.get("red").contains(player)){
+			return "red";
+		} else if(Main.playersTeam.get("green").contains(player)){
+			return "red";
+		} else if(Main.playersTeam.get("purple").contains(player)){
+			return "red";
+		}
+		return null;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.fk.main;
 
 import java.io.IOException;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CreateGameConfig extends JavaPlugin{
@@ -33,13 +34,14 @@ public class CreateGameConfig extends JavaPlugin{
 	}
 	
 	public static boolean createTeamSpawn(String name, int x, int y, int z){
-		if(Main.config.getString("team").contentEquals(name)){
-			Main.config.set("team."+name+"base.x", x);
-			Main.config.set("team."+name+"base.y", y);
-			Main.config.set("team."+name+"base.z", z);
-		} else {
+		try {
+			name = name.toUpperCase();
+			Main.config.set("team."+name+".base.x", x);
+			Main.config.set("team."+name+".base.y", y);
+			Main.config.set("team."+name+".base.z", z);
+		} catch(Exception e){
 			return false;
-		}
+	    }
 		
 		try {
 			Main.config.save(Main.configFile);
