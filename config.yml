@@ -11,22 +11,18 @@ team:
         x: 0
         y: -1
         z: 0
-      players: []
     BLUE:
       base:
         x: 0
         y: -1
         z: 0
-      players: []
     GREEN:
       base:
         x: 0
         y: -1
         z: 0
-      players: []
     PURPLE:
       base:
         x: 0
         y: -1
         z: 0
-      players: []
