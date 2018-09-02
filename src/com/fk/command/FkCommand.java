@@ -115,7 +115,6 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 									    }
 									}
 								}
-								sender.sendMessage(args[2]+" "+x+" "+y+" "+z);
 								CreateGameConfig.createTeamSpawn(args[2], x, y, z);
 								sender.sendMessage(ChatColor.GREEN+"The "+args[2]+" spawn been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("team."+args[2]+".base.x")+" "+Main.config.getInt("team."+args[2]+".base.y")+" "+Main.config.getInt("team."+args[2]+".base.z"));
 							}
@@ -171,6 +170,20 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					ArrayList<String> commandFound = new ArrayList<String>();
 					for(String s: commandList) {
 						if(s.toLowerCase().startsWith(args[1].toLowerCase())){
+							commandFound.add(s);
+						}
+					}
+					return commandFound;
+				}
+			} else if(args.length == 3){
+				if(args[0].equalsIgnoreCase("team") && (args[1].equalsIgnoreCase("spawn"))){
+					commandList.add("RED");
+					commandList.add("BLUE");
+					commandList.add("GREEN");
+					commandList.add("PURPLE");
+					ArrayList<String> commandFound = new ArrayList<String>();
+					for(String s: commandList) {
+						if(s.toLowerCase().startsWith(args[2].toLowerCase())){
 							commandFound.add(s);
 						}
 					}
