@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fk.command.FkCommand;
 import com.fk.event.EntityEvent;
+import com.fk.event.PlayerDropEvent;
 import com.fk.event.PlayerFoodEvent;
 import com.fk.event.PlayerHealthEvent;
 import com.fk.event.PlayerInventoryClick;
@@ -48,6 +49,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerHealthEvent(), this);
         pm.registerEvents(new PlayerInventoryClick(), this);
         pm.registerEvents(new PlayerLeaveEvent(), this);
+        pm.registerEvents(new PlayerDropEvent(), this);
         pm.registerEvents(new EntityEvent(), this);
         
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
