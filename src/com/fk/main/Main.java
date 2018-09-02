@@ -2,6 +2,7 @@ package com.fk.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import com.fk.command.FkCommand;
 import com.fk.event.EntityEvent;
 import com.fk.event.PlayerFoodEvent;
 import com.fk.event.PlayerHealthEvent;
+import com.fk.event.PlayerInventoryClick;
 import com.fk.event.PlayerJoinedEvent;
+import com.fk.event.PlayerLeaveEvent;
 import com.fk.event.PlayerNewLoginEvent;
 
 public class Main extends JavaPlugin{
@@ -43,10 +46,17 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerJoinedEvent(), this);
         pm.registerEvents(new PlayerFoodEvent(), this);
         pm.registerEvents(new PlayerHealthEvent(), this);
+        pm.registerEvents(new PlayerInventoryClick(), this);
+        pm.registerEvents(new PlayerLeaveEvent(), this);
         pm.registerEvents(new EntityEvent(), this);
         
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
     	getCommand("fallenkingdom").setExecutor(fallenkingdomExecutor);
+    	
+    	playersTeam.put("RED", new ArrayList<Player>());
+    	playersTeam.put("BLUE", new ArrayList<Player>());
+    	playersTeam.put("GREEN", new ArrayList<Player>());
+    	playersTeam.put("PURPLE", new ArrayList<Player>());
     	
     	if(config.getInt("spawn.y")!=-1 && config.getInt("team.RED.base.y")!=-1 && config.getInt("team.BLUE.base.y")!=-1 && config.getInt("team.GREEN.base.y")!=-1 && config.getInt("team.PURPLE.base.y")!=-1){
     		spawnStatus = true;
@@ -79,14 +89,14 @@ public class Main extends JavaPlugin{
 	}
 	
 	public static String getPlayerTeam(Player player){
-		if(Main.playersTeam.get("blue").contains(player)){
-			return "blue";
-		} else if(Main.playersTeam.get("red").contains(player)){
-			return "red";
-		} else if(Main.playersTeam.get("green").contains(player)){
-			return "red";
-		} else if(Main.playersTeam.get("purple").contains(player)){
-			return "red";
+		if(Main.playersTeam.get("RED").contains(player)){
+			return "RED";
+		} else if(Main.playersTeam.get("BLUE").contains(player)){
+			return "BLUE";
+		} else if(Main.playersTeam.get("GREEN").contains(player)){
+			return "GREEN";
+		} else if(Main.playersTeam.get("PURPLE").contains(player)){
+			return "PURPLE";
 		}
 		return null;
 	}
