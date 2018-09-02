@@ -16,13 +16,12 @@ public class PlayerJoinedEvent implements Listener{
 	
 	@EventHandler
 	public void PlayerJoinEvent(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
+		Bukkit.getServer().getPlayer(p.getName()).getInventory().clear();
+		p.setHealth(20);
+		p.setFoodLevel(20);
+		p.setExp(0);
 		if(!Main.gameStatus && Main.gameSetup) {
-			Player p = e.getPlayer();
-			
-			Bukkit.getServer().getPlayer(p.getName()).getInventory().clear();
-			p.setHealth(20);
-			p.setFoodLevel(20);
-			p.setExp(0);
 			
 			ItemStack joinTeam = new ItemStack(Material.WHITE_WOOL, 1);
 			ItemMeta meta1 = (ItemMeta) joinTeam.getItemMeta();
@@ -32,6 +31,7 @@ public class PlayerJoinedEvent implements Listener{
 			Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(4, joinTeam);
 		}
 		if(!Main.gameSetup){
+			
 			e.setJoinMessage("");
 			e.getPlayer().sendMessage(ChatColor.BLUE+"***************************************************************************"+ChatColor.GREEN+"\nWelcome on the server!\n");
 			e.getPlayer().sendMessage(ChatColor.GREEN+"\nYour server isn't ready to start a Fallen Kingdom game yet.\n");

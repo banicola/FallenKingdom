@@ -36,7 +36,8 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					Main.gameSetup = true;
-					sender.sendMessage(ChatColor.GREEN+"Your server is now setup !\nYou can start to play when you want !\nGood luck.");
+					sender.sendMessage(ChatColor.GREEN+"Your server is now setup !\nYou can start to play when you want !\nGood luck.\n");
+					sender.sendMessage(ChatColor.LIGHT_PURPLE+"\nYou have to disconnect and reconnect to start playing.");
 				} 
 				
 				else if(args[0].equalsIgnoreCase("setspawn")){
@@ -153,7 +154,9 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 		if(cmd.getName().equalsIgnoreCase("fk") || cmd.getName().equalsIgnoreCase("fallenkingdom")) {
 			ArrayList<String> commandList = new ArrayList<String>();
 			if(args.length == 1){
-				commandList.add("start");
+				if(Main.spawnStatus && Main.teamStatus) {
+					commandList.add("start");
+				}
 				commandList.add("setspawn");
 				commandList.add("team");
 				ArrayList<String> commandFound = new ArrayList<String>();
