@@ -17,7 +17,7 @@ public class PlayerInventoryClick implements Listener{
 	@EventHandler
 	public void playerInventoryClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
-		if(!Main.gameStatus){
+		if(!Main.gameStatus && Main.gameSetup){
 			e.setCancelled(true);
 			if(e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR)){
 				if(e.getCurrentItem().getItemMeta().getDisplayName().equals("Choose a team")){
