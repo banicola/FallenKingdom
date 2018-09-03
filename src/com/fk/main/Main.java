@@ -58,9 +58,9 @@ public class Main extends JavaPlugin{
     	playersTeam.put("RED", new ArrayList<Player>());
     	playersTeam.put("BLUE", new ArrayList<Player>());
     	playersTeam.put("GREEN", new ArrayList<Player>());
-    	playersTeam.put("PURPLE", new ArrayList<Player>());
+    	playersTeam.put("YELLOW", new ArrayList<Player>());
     	
-    	if(config.getInt("spawn.y")!=-1 && config.getInt("team.RED.base.y")!=-1 && config.getInt("team.BLUE.base.y")!=-1 && config.getInt("team.GREEN.base.y")!=-1 && config.getInt("team.PURPLE.base.y")!=-1){
+    	if(config.getInt("spawn.y")!=-1 && config.getInt("team.RED.base.y")!=-1 && config.getInt("team.BLUE.base.y")!=-1 && config.getInt("team.GREEN.base.y")!=-1 && config.getInt("team.YELLOW.base.y")!=-1){
     		spawnStatus = true;
     		teamStatus = true;
     		gameSetup = true;;
@@ -97,8 +97,8 @@ public class Main extends JavaPlugin{
 			return "BLUE";
 		} else if(Main.playersTeam.get("GREEN").contains(player)){
 			return "GREEN";
-		} else if(Main.playersTeam.get("PURPLE").contains(player)){
-			return "PURPLE";
+		} else if(Main.playersTeam.get("YELLOW").contains(player)){
+			return "YELLOW";
 		}
 		return null;
 	}

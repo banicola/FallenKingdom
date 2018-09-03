@@ -135,7 +135,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					Main.spawnStatus = true;
 					spawnStatusColor = ChatColor.GREEN+""+Main.spawnStatus;
 				}
-				if(Main.config.getInt("team.RED.base.y")!=-1 && Main.config.getInt("team.BLUE.base.y")!=-1 && Main.config.getInt("team.GREEN.base.y")!=-1 && Main.config.getInt("team.PURPLE.base.y")!=-1){
+				if(Main.config.getInt("team.RED.base.y")!=-1 && Main.config.getInt("team.BLUE.base.y")!=-1 && Main.config.getInt("team.GREEN.base.y")!=-1 && Main.config.getInt("team.YELLOW.base.y")!=-1){
 					Main.teamStatus = true;
 					teamStatusColor = ChatColor.GREEN+""+Main.teamStatus;
 				}
@@ -183,7 +183,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					commandList.add("RED");
 					commandList.add("BLUE");
 					commandList.add("GREEN");
-					commandList.add("PURPLE");
+					commandList.add("YELLOW");
 					ArrayList<String> commandFound = new ArrayList<String>();
 					for(String s: commandList) {
 						if(s.toLowerCase().startsWith(args[2].toLowerCase())){

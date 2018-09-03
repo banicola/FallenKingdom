@@ -25,8 +25,8 @@ public class PlayerInventoryClick implements Listener{
 	  		  		TeamMenu.chooseTeamPlayer(p, "BLUE");
 	  		  	} else if(e.getCurrentItem().getItemMeta().getDisplayName().equals("GREEN team")){
 	  		  		TeamMenu.chooseTeamPlayer(p, "GREEN");
-	  		  	} else if(e.getCurrentItem().getItemMeta().getDisplayName().equals("PURPLE team")){
-	  		  		TeamMenu.chooseTeamPlayer(p, "PURPLE");
+	  		  	} else if(e.getCurrentItem().getItemMeta().getDisplayName().equals("YELLOW team")){
+	  		  		TeamMenu.chooseTeamPlayer(p, "YELLOW");
 	  		  	}
 			}
 		}

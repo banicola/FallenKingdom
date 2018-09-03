@@ -29,15 +29,15 @@ public class TeamMenu extends JavaPlugin{
 		meta3.setDisplayName("GREEN team");
 		GREEN.setItemMeta(meta3);
 		
-		ItemStack PURPLE = new ItemStack(Material.PURPLE_WOOL, 1);
-		ItemMeta meta4 = (ItemMeta) PURPLE.getItemMeta();
-		meta4.setDisplayName("PURPLE team");
-		PURPLE.setItemMeta(meta4);
+		ItemStack YELLOW = new ItemStack(Material.YELLOW_WOOL, 1);
+		ItemMeta meta4 = (ItemMeta) YELLOW.getItemMeta();
+		meta4.setDisplayName("YELLOW team");
+		YELLOW.setItemMeta(meta4);
 		
 		teamMenu.setItem(0, RED);
 		teamMenu.setItem(1, BLUE);
 		teamMenu.setItem(2, GREEN);
-		teamMenu.setItem(3, PURPLE);
+		teamMenu.setItem(3, YELLOW);
 		p.openInventory(teamMenu);
 	}
 	
@@ -63,8 +63,8 @@ public class TeamMenu extends JavaPlugin{
 				joinTeam = new ItemStack(Material.BLUE_WOOL, 1);
 			} else if(team.equals("GREEN")) {
 				joinTeam = new ItemStack(Material.GREEN_WOOL, 1);
-			} else if(team.equals("PURPLE")) {
-				joinTeam = new ItemStack(Material.PURPLE_WOOL, 1);
+			} else if(team.equals("YELLOW")) {
+				joinTeam = new ItemStack(Material.YELLOW_WOOL, 1);
 			}
 			p.sendMessage(ChatColor.BLUE+"You joined the "+ChatColor.GREEN+team+ChatColor.BLUE+" team !");
 		}
