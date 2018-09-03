@@ -40,6 +40,7 @@ public class PlayerJoinedEvent implements Listener{
 			Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(4, joinTeam);
 		}
 		if(!Main.gameSetup && p.isOp()){
+			p.setGameMode(GameMode.CREATIVE);
 			e.setJoinMessage("");
 			e.getPlayer().sendMessage(ChatColor.BLUE+"***************************************************************************"+ChatColor.GREEN+"\nWelcome on the server!\n");
 			e.getPlayer().sendMessage(ChatColor.GREEN+"\nYour server isn't ready to start a Fallen Kingdom game yet.\n");

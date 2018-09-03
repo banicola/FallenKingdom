@@ -12,6 +12,8 @@ public class PlayerHealthEvent implements Listener{
 	public void PlayerDamageEvent(EntityDamageEvent e){
 		if(!Main.gameStatus && e.getEntityType().equals(EntityType.PLAYER)){
 			e.setCancelled(true);
+		} else if(Main.gameStatus && e.getEntityType().equals(EntityType.PLAYER) && Main.day == 3) {
+			
 		}
 	}
 

@@ -82,7 +82,7 @@ public class TeamMenu extends JavaPlugin{
 		int teamReady = 0;
 		for(String teamList : Main.teams) {
 			if(Main.playersTeam.get(teamList).size()>=Main.config.getInt("min_team")) {
-				teamReady+=1;
+				teamReady++;
 			}
 		}
 		if(teamReady>=2) {

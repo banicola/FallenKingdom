@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fk.command.FkCommand;
 import com.fk.event.EntityEvent;
+import com.fk.event.NewDayEvent;
 import com.fk.event.PlayerDropEvent;
 import com.fk.event.PlayerFoodEvent;
 import com.fk.event.PlayerHealthEvent;
@@ -38,8 +39,10 @@ public class Main extends JavaPlugin{
 	public static boolean gameStatus = false;
 	public static boolean spawnStatus = false;
 	public static boolean lobbyStatus = false;
+	public static boolean countdownStatus = false;
 	
 	public static int day = 0;
+	public static int teamReady = 0;
 	
 	public static File configFile;
     public static FileConfiguration config;
@@ -59,6 +62,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerLeaveEvent(), this);
         pm.registerEvents(new PlayerDropEvent(), this);
         pm.registerEvents(new PlayerMoveLaunch(), this);
+        pm.registerEvents(new NewDayEvent(), this);
         pm.registerEvents(new EntityEvent(), this);
         
 		CommandExecutor fallenkingdomExecutor = new FkCommand();

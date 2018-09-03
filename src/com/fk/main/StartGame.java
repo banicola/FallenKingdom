@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class StartGame extends JavaPlugin{
 	
-	public static void startGame(){
+	public static void LobbyCountdown(){
 		Countdown.CountdownStart(20);
 	}
 	public static void LauchGame(){

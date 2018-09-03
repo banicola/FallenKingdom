@@ -10,7 +10,7 @@ public class PlayerDropEvent implements Listener{
 	
 	@EventHandler
 	public void PlayerDropItemEvent(PlayerDropItemEvent e) {
-		if(!Main.gameStatus) {
+		if(!Main.gameStatus && Main.gameSetup) {
 			e.setCancelled(true);
 		}
 	}

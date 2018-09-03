@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.fk.main.Main;
+import com.fk.main.StartGame;
 import com.fk.main.TeamMenu;
 
 public class PlayerInventoryClick implements Listener{
@@ -32,13 +33,15 @@ public class PlayerInventoryClick implements Listener{
 	  		  		TeamMenu.chooseTeamPlayer(p, "YELLOW");
 	  		  	}
 			}
+		} else if(Main.gameStatus && Main.day!=0) {
+			e.setCancelled(false);
 		}
 	}
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e){
-		if(!Main.gameStatus){
+		if(!Main.gameStatus && Main.gameSetup){
 			Player p = (Player) e.getPlayer();
 			e.setCancelled(true);
 			if(p.getInventory().getHeldItemSlot() == 4){
@@ -53,6 +56,26 @@ public class PlayerInventoryClick implements Listener{
 					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
 					Main.playerStatus.put(p, true);
 					
+					if(!Main.teamStatus.get(Main.getPlayerTeam(p))) {
+						int totalReady = 0;
+						for(Player player : Main.playersTeam.get(Main.getPlayerTeam(p))) {
+							if(Main.playerStatus.get(player)) {
+								totalReady++;
+							}
+						}
+						if(totalReady>=Main.config.getInt("min_team")) {
+							Main.teamStatus.put(Main.getPlayerTeam(p), true);
+							Main.teamReady++;
+						}
+					}
+					
+					if(!Main.countdownStatus) {
+						if(Main.teamReady>=2) {
+							StartGame.LobbyCountdown();
+							Main.countdownStatus = true;
+						}
+					}
+					
 				} else if(p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("Ready")) {
 					ItemStack ready = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
 					ItemMeta meta2 = (ItemMeta) ready.getItemMeta();
@@ -61,6 +84,23 @@ public class PlayerInventoryClick implements Listener{
 					
 					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
 					Main.playerStatus.put(p, false);
+					int totalReady = 0;
+					for(Player player : Main.playersTeam.get(Main.getPlayerTeam(p))) {
+						if(Main.playerStatus.get(player)) {
+							totalReady++;
+						}
+					}
+					if(totalReady<Main.config.getInt("min_team")) {
+						Main.teamReady--;
+					}
+					
+					if(Main.countdownStatus) {
+						if(Main.teamReady<2) {
+							StartGame.LobbyCountdown();
+							Main.countdownStatus = false;
+						}
+						
+					}
 				}
 			}
 		}
