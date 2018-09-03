@@ -83,6 +83,10 @@ public class Main extends JavaPlugin{
     		lobbyStatus = true;
     		gameSetup = true;
     	}
+    	
+    	Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle false");
+		Bukkit.getServer().getWorld(Main.config.getString("world")).setTime(0);
+		Bukkit.getServer().getWorld(Main.config.getString("world")).setStorm(false);
 	}
 
 	public void onDisable(){

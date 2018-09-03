@@ -36,8 +36,7 @@ public class Countdown extends JavaPlugin{
         				if(time == 0){
         					if(Main.gameStatus) {
         						p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 10, 1);
-        						Bukkit.getServer().getWorld(Main.config.getString("world")).setTime(0);
-        						Bukkit.getServer().getWorld(Main.config.getString("world")).setStorm(false);
+        						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle true");
         						Main.day=1;
         						Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE+"Day "+ChatColor.GREEN+Main.day);
         					} else {
