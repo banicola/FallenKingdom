@@ -30,7 +30,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 			
 			if(args.length > 0) {
 				
-				if(args[0].equalsIgnoreCase("start") && Main.spawnStatus && Main.teamStatus) {
+				if(args[0].equalsIgnoreCase("start") && Main.spawnStatus && Main.lobbyStatus) {
 					if(Main.gameSetup){
 						sender.sendMessage(ChatColor.RED+"This game has already been launched !\nYou can now start your own FallenKingdom !");
 						return true;
@@ -40,15 +40,15 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					sender.sendMessage(ChatColor.LIGHT_PURPLE+"\nYou have to disconnect and reconnect to start playing.");
 				} 
 				
-				else if(args[0].equalsIgnoreCase("setspawn")){
+				else if(args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("lobby")){
 					if(args.length == 1){
-						if(Main.config.getInt("spawn.y") == -1 || !(Main.config.getInt("spawn.x") == x && Main.config.getInt("spawn.y") == y && Main.config.getInt("spawn.z") == z)) {
-							if(CreateGameConfig.createSpawn(l.getWorld().getName(), x, y, z)){
-								sender.sendMessage(ChatColor.GREEN+"The spawn has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+						if(Main.config.getInt(args[0]+".y") == -1 || !(Main.config.getInt(args[0]+".x") == x && Main.config.getInt(args[0]+".y") == y && Main.config.getInt(args[0]+".z") == z)) {
+							if(CreateGameConfig.createSpawnLobby(l.getWorld().getName(), args[0], x, y, z)){
+								sender.sendMessage(ChatColor.GREEN+"The "+args[0]+" has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt(args[0]+".x")+" "+Main.config.getInt(args[0]+".y")+" "+Main.config.getInt(args[0]+".z"));
 							} 
 						} else {
-							sender.sendMessage(ChatColor.RED+"The spawn is already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
-							sender.sendMessage(ChatColor.RED+"You can still modify it by using: /fk create spawn <X> <Y> <Z>");
+							sender.sendMessage(ChatColor.RED+"The "+args[0]+" is already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt(args[0]+".x")+" "+Main.config.getInt(args[0]+".y")+" "+Main.config.getInt(args[0]+".z"));
+							sender.sendMessage(ChatColor.RED+"You can still modify it by using: /fk "+args[0]+" <X> <Y> <Z>");
 						}							
 					} else if(args.length ==  4){
 						
@@ -69,80 +69,39 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 						        }
 						        	
 						    }catch(Exception e){
-						    	sender.sendMessage(ChatColor.RED+"Usage: /fk create spawn <X> <Y> <Z>");
+						    	sender.sendMessage(ChatColor.RED+"Usage: /fk "+args[0]+" <X> <Y> <Z>");
 						        return true;
 						    }
 						}
-						if(Main.config.getInt("spawn.x")==x && Main.config.getInt("spawn.y")==y &&Main.config.getInt("spawn.z")==z){
-							sender.sendMessage(ChatColor.RED+"The spawn is already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+						if(Main.config.getInt(args[0]+".x")==x && Main.config.getInt(args[0]+".y")==y &&Main.config.getInt(args[0]+".z")==z){
+							sender.sendMessage(ChatColor.RED+"The "+args[0]+" is already set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt(args[0]+".x")+" "+Main.config.getInt(args[0]+".y")+" "+Main.config.getInt(args[0]+".z"));
 							return true;
 						}
-						CreateGameConfig.createSpawn(l.getWorld().getName(), x, y, z);
-						sender.sendMessage(ChatColor.GREEN+"The spawn has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("spawn.x")+" "+Main.config.getInt("spawn.y")+" "+Main.config.getInt("spawn.z"));
+						CreateGameConfig.createSpawnLobby(l.getWorld().getName(), args[0], x, y, z);
+						sender.sendMessage(ChatColor.GREEN+"The "+args[0]+" has been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt(args[0]+".x")+" "+Main.config.getInt(args[0]+".y")+" "+Main.config.getInt(args[0]+".z"));
 						
 					} else {
-						sender.sendMessage(ChatColor.RED+"Usage: /fk create spawn <X> <Y> <Z>");
+						sender.sendMessage(ChatColor.RED+"Usage: /fk "+args[0]+" <X> <Y> <Z>");
 						return true;
 					}
-				} 
-				
-				else if(args[0].equalsIgnoreCase("team")){
-					if(args.length == 1 || args.length == 2 || args.length>6) {
-						sender.sendMessage(ChatColor.RED+"Usage: /fk team spawn <Name Team> <X> <Y> <Z>");
-					} else if(args.length >= 3) {
-						args[2] = args[2].toUpperCase();
-						if(!Main.config.getString("team."+args[2]).isEmpty()){
-							if(Main.config.getInt("team."+args[2]+".base.x")!=x || Main.config.getInt("team."+args[2]+".base.y")!=y || Main.config.getInt("team."+args[2]+".base.z")!=z){
-								if(args.length == 6) {
-									for(int i=3;i<6;i++) {
-										try{
-									        int temp = Integer.parseInt(args[i]);
-									        if(i==4 && (temp>256 || temp<0)){
-									        	sender.sendMessage(ChatColor.RED+"Error: Y isn't in the range 0-256 !");
-										        return true;
-									        }
-									        switch(i) {
-										        case 3: x = temp;
-										        		break;
-										        case 4: y = temp;
-										        		break;
-										        case 5: z = temp;
-										        		break;
-									        }
-									        	
-									    } catch(Exception e){
-									    	sender.sendMessage(ChatColor.RED+"Usage: /fk team spawn <Name Team> <X> <Y> <Z>");
-									        return true;
-									    }
-									}
-								}
-								CreateGameConfig.createTeamSpawn(args[2], x, y, z);
-								sender.sendMessage(ChatColor.GREEN+"The "+args[2]+" spawn been set to "+ChatColor.LIGHT_PURPLE+Main.config.getInt("team."+args[2]+".base.x")+" "+Main.config.getInt("team."+args[2]+".base.y")+" "+Main.config.getInt("team."+args[2]+".base.z"));
-							}
-						} else {
-							sender.sendMessage(ChatColor.RED+"Error: The team "+ChatColor.WHITE+args[2]+ChatColor.RED+" doesn't exists !");
-					        return true;
-						}						
-					}
 				}
-				
 			} else {
 				//Default message
 				sender.sendMessage(ChatColor.BLUE + "=========== Fallen Kingdom ============");
 				String spawnStatusColor= ChatColor.RED+""+Main.spawnStatus;
-				String teamStatusColor = ChatColor.RED+""+Main.teamStatus;
+				String lobbyStatusColor = ChatColor.RED+""+Main.lobbyStatus;
 				if(Main.config.getInt("spawn.y")!=-1) {
 					Main.spawnStatus = true;
 					spawnStatusColor = ChatColor.GREEN+""+Main.spawnStatus;
 				}
-				if(Main.config.getInt("team.RED.base.y")!=-1 && Main.config.getInt("team.BLUE.base.y")!=-1 && Main.config.getInt("team.GREEN.base.y")!=-1 && Main.config.getInt("team.YELLOW.base.y")!=-1){
-					Main.teamStatus = true;
-					teamStatusColor = ChatColor.GREEN+""+Main.teamStatus;
+				if(Main.config.getInt("lobby.y")!=-1){
+					Main.lobbyStatus = true;
+					lobbyStatusColor = ChatColor.GREEN+""+Main.lobbyStatus;
 				}
-				if(Main.spawnStatus && Main.teamStatus) {
+				if(Main.spawnStatus && Main.lobbyStatus) {
 					sender.sendMessage(ChatColor.GREEN + "/fk start : start game\n");
 				}
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fk setspawn : Setup the spawn ("+spawnStatusColor+ChatColor.LIGHT_PURPLE+")\n/fk team : Change team settings ("+teamStatusColor+ChatColor.LIGHT_PURPLE+")\n");
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fk spawn : Setup the spawn ("+spawnStatusColor+ChatColor.LIGHT_PURPLE+")\n/fk lobby : Change lobby spawns ("+lobbyStatusColor+ChatColor.LIGHT_PURPLE+")\n");
 				sender.sendMessage(ChatColor.BLUE + "====================================");
 			}
 		}
@@ -154,11 +113,11 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 		if(cmd.getName().equalsIgnoreCase("fk") || cmd.getName().equalsIgnoreCase("fallenkingdom")) {
 			ArrayList<String> commandList = new ArrayList<String>();
 			if(args.length == 1){
-				if(Main.spawnStatus && Main.teamStatus) {
+				if(Main.spawnStatus && Main.lobbyStatus) {
 					commandList.add("start");
 				}
-				commandList.add("setspawn");
-				commandList.add("team");
+				commandList.add("spawn");
+				commandList.add("lobby");
 				ArrayList<String> commandFound = new ArrayList<String>();
 				for(String s: commandList) {
 					if(s.toLowerCase().startsWith(args[0].toLowerCase())){
@@ -166,32 +125,6 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					}
 				}
 				return commandFound;
-				
-			} else if(args.length == 2){
-				if(args[0].equalsIgnoreCase("team")) {
-					commandList.add("spawn");
-					ArrayList<String> commandFound = new ArrayList<String>();
-					for(String s: commandList) {
-						if(s.toLowerCase().startsWith(args[1].toLowerCase())){
-							commandFound.add(s);
-						}
-					}
-					return commandFound;
-				}
-			} else if(args.length == 3){
-				if(args[0].equalsIgnoreCase("team") && (args[1].equalsIgnoreCase("spawn"))){
-					commandList.add("RED");
-					commandList.add("BLUE");
-					commandList.add("GREEN");
-					commandList.add("YELLOW");
-					ArrayList<String> commandFound = new ArrayList<String>();
-					for(String s: commandList) {
-						if(s.toLowerCase().startsWith(args[2].toLowerCase())){
-							commandFound.add(s);
-						}
-					}
-					return commandFound;
-				}
 			}
 		}
 		return new ArrayList<String>();

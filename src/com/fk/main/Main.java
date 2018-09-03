@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,6 +23,7 @@ import com.fk.event.PlayerHealthEvent;
 import com.fk.event.PlayerInventoryClick;
 import com.fk.event.PlayerJoinedEvent;
 import com.fk.event.PlayerLeaveEvent;
+import com.fk.event.PlayerMoveLaunch;
 import com.fk.event.PlayerNewLoginEvent;
 
 public class Main extends JavaPlugin{
@@ -31,7 +33,9 @@ public class Main extends JavaPlugin{
 	public static boolean gameSetup = false;
 	public static boolean gameStatus = false;
 	public static boolean spawnStatus = false;
-	public static boolean teamStatus = false;
+	public static boolean lobbyStatus = false;
+	
+	public static int day = 0;
 	
 	public static File configFile;
     public static FileConfiguration config;
@@ -50,6 +54,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerInventoryClick(), this);
         pm.registerEvents(new PlayerLeaveEvent(), this);
         pm.registerEvents(new PlayerDropEvent(), this);
+        pm.registerEvents(new PlayerMoveLaunch(), this);
         pm.registerEvents(new EntityEvent(), this);
         
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
@@ -60,14 +65,18 @@ public class Main extends JavaPlugin{
     	playersTeam.put("GREEN", new ArrayList<Player>());
     	playersTeam.put("YELLOW", new ArrayList<Player>());
     	
-    	if(config.getInt("spawn.y")!=-1 && config.getInt("team.RED.base.y")!=-1 && config.getInt("team.BLUE.base.y")!=-1 && config.getInt("team.GREEN.base.y")!=-1 && config.getInt("team.YELLOW.base.y")!=-1){
+    	if(config.getInt("spawn.y")!=-1 && config.getInt("lobby.y")!=-1){
     		spawnStatus = true;
-    		teamStatus = true;
-    		gameSetup = true;;
+    		lobbyStatus = true;
+    		gameSetup = true;
     	}
 	}
 
-	public void onDisable(){}
+	public void onDisable(){
+		for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+			p.kickPlayer("The plugin FallenKingdom has been reloaded !");
+		}
+	}
 	
 	private void createFiles() {
 		configFile = new File(getDataFolder(), "config.yml");

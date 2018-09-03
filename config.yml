@@ -3,26 +3,9 @@ spawn:
   x: 0
   y: -1
   z: 0
+lobby:
+  x: 0
+  y: -1
+  z: 0
 min_team: 2
 size_team: 4
-team:
-    RED:
-      base:
-        x: 0
-        y: -1
-        z: 0
-    BLUE:
-      base:
-        x: 0
-        y: -1
-        z: 0
-    GREEN:
-      base:
-        x: 0
-        y: -1
-        z: 0
-    YELLOW:
-      base:
-        x: 0
-        y: -1
-        z: 0
