@@ -8,4 +8,4 @@ lobby:
   y: -1
   z: 0
 min_team: 2
-size_team: 4
+max_team: 4

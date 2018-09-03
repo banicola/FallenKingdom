@@ -29,6 +29,10 @@ import com.fk.event.PlayerNewLoginEvent;
 public class Main extends JavaPlugin{
 	
 	public static HashMap<String, List<Player>> playersTeam = new HashMap<String, List<Player>>();
+	public static HashMap<Player, Boolean> playerStatus = new HashMap<Player, Boolean>();
+	
+	public static ArrayList<String> teams = new ArrayList<String>();
+	public static HashMap<String, Boolean> teamStatus = new HashMap<String, Boolean>();
 	
 	public static boolean gameSetup = false;
 	public static boolean gameStatus = false;
@@ -60,10 +64,15 @@ public class Main extends JavaPlugin{
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
     	getCommand("fallenkingdom").setExecutor(fallenkingdomExecutor);
     	
-    	playersTeam.put("RED", new ArrayList<Player>());
-    	playersTeam.put("BLUE", new ArrayList<Player>());
-    	playersTeam.put("GREEN", new ArrayList<Player>());
-    	playersTeam.put("YELLOW", new ArrayList<Player>());
+    	teams.add("RED");
+    	teams.add("GREEN");
+    	teams.add("BLUE");
+    	teams.add("YELLOW");
+    	
+    	for(String team : teams) {
+    		playersTeam.put(team, new ArrayList<Player>());
+    		teamStatus.put(team, false);
+    	}
     	
     	if(config.getInt("spawn.y")!=-1 && config.getInt("lobby.y")!=-1){
     		spawnStatus = true;

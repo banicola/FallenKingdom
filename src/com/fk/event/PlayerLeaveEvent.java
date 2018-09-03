@@ -14,6 +14,7 @@ public class PlayerLeaveEvent implements Listener{
 			try {
 				Player p = e.getPlayer();
 				Main.playersTeam.get(Main.getPlayerTeam(p)).remove(p);
+				Main.playerStatus.remove(p);
 			} catch(Exception exception) {
 				
 			}

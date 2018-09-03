@@ -3,6 +3,7 @@ package com.fk.event;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,6 +28,9 @@ public class PlayerJoinedEvent implements Listener{
 		if(!Main.gameStatus && Main.gameSetup) {
 			
 			p.setGameMode(GameMode.ADVENTURE);
+			Location lobby = new Location(Bukkit.getWorld(Main.config.getString("world")), Main.config.getInt("lobby.x"), Main.config.getInt("lobby.y"), Main.config.getInt("lobby.z"));
+			p.teleport(lobby);
+			Main.playerStatus.put(p, false);
 			
 			ItemStack joinTeam = new ItemStack(Material.WHITE_WOOL, 1);
 			ItemMeta meta1 = (ItemMeta) joinTeam.getItemMeta();

@@ -46,8 +46,10 @@ public class TeamMenu extends JavaPlugin{
 		ItemStack joinTeam = p.getInventory().getItem(4);
 		if(Main.playersTeam.get(team).contains(p)) {
 			p.sendMessage(ChatColor.RED+"You are already in the "+ChatColor.WHITE+team+ChatColor.RED+" team.");
-		} else if(Main.playersTeam.get(team).size() == Main.config.getInt("size_team")) {
+		} else if(Main.playersTeam.get(team).size() == Main.config.getInt("max_team")) {
 			p.sendMessage(ChatColor.RED+"The "+ChatColor.WHITE+team+ChatColor.RED+" team is already full.");
+		} else if(Main.playerStatus.get(p)){
+			p.sendMessage(ChatColor.RED+"You cannot join the "+ChatColor.WHITE+team+ChatColor.RED+" team when you are ready.");
 		} else {
 			try {
 				String pTeam = Main.getPlayerTeam(p);
@@ -66,7 +68,7 @@ public class TeamMenu extends JavaPlugin{
 			} else if(team.equals("YELLOW")) {
 				joinTeam = new ItemStack(Material.YELLOW_WOOL, 1);
 			}
-			p.sendMessage(ChatColor.BLUE+"You joined the "+ChatColor.GREEN+team+ChatColor.BLUE+" team !");
+			p.sendMessage(ChatColor.BLUE+"You joined the "+ChatColor.WHITE+team+ChatColor.BLUE+" team !");
 		}
 		
 		ItemMeta meta1 = (ItemMeta) joinTeam.getItemMeta();
@@ -77,6 +79,31 @@ public class TeamMenu extends JavaPlugin{
 		
 		p.closeInventory();
 		
+		int teamReady = 0;
+		for(String teamList : Main.teams) {
+			if(Main.playersTeam.get(teamList).size()>=Main.config.getInt("min_team")) {
+				teamReady+=1;
+			}
+		}
+		if(teamReady>=2) {
+			for(Player po : Bukkit.getServer().getOnlinePlayers()) {
+				if(Main.getPlayerTeam(po) != null && po.getInventory().getItem(8)==null) {
+					ItemStack ready = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
+					ItemMeta meta2 = (ItemMeta) ready.getItemMeta();
+					meta2.setDisplayName("Not Ready");
+					ready.setItemMeta(meta2);
+					
+					Bukkit.getServer().getPlayer(po.getName()).getInventory().setItem(8, ready);
+				}
+			}
+		} else {
+			for(Player po : Bukkit.getServer().getOnlinePlayers()) {
+				if(Main.getPlayerTeam(po) != null && po.getInventory().getItem(8)!=null) {					
+					Bukkit.getServer().getPlayer(po.getName()).getInventory().removeItem(po.getInventory().getItem(8));
+					Main.playerStatus.put(p, false);
+				}
+			}
+		}
 	}
 
 }

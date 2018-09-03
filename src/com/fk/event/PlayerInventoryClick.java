@@ -1,11 +1,14 @@
 package com.fk.event;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.fk.main.Main;
 import com.fk.main.TeamMenu;
@@ -32,6 +35,7 @@ public class PlayerInventoryClick implements Listener{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e){
 		if(!Main.gameStatus){
@@ -39,6 +43,25 @@ public class PlayerInventoryClick implements Listener{
 			e.setCancelled(true);
 			if(p.getInventory().getHeldItemSlot() == 4){
 				TeamMenu.teamMenuDisplay(p);
+			} else if(p.getInventory().getHeldItemSlot() == 8){
+				if(p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("Not Ready")) {
+					ItemStack ready = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
+					ItemMeta meta2 = (ItemMeta) ready.getItemMeta();
+					meta2.setDisplayName("Ready");
+					ready.setItemMeta(meta2);
+					
+					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
+					Main.playerStatus.put(p, true);
+					
+				} else if(p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("Ready")) {
+					ItemStack ready = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
+					ItemMeta meta2 = (ItemMeta) ready.getItemMeta();
+					meta2.setDisplayName("Not Ready");
+					ready.setItemMeta(meta2);
+					
+					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
+					Main.playerStatus.put(p, false);
+				}
 			}
 		}
 	}
