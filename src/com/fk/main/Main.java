@@ -39,14 +39,18 @@ public class Main extends JavaPlugin{
 	public static HashMap<String, Player> teamLeader = new HashMap<String, Player>();
 	public static HashMap<String, Location> teamBase = new HashMap<String, Location>();
 	
+	public static HashMap<Player, Boolean> vote = new HashMap<Player, Boolean>();
+	
 	public static boolean gameSetup = false;
 	public static boolean gameStatus = false;
 	public static boolean spawnStatus = false;
 	public static boolean lobbyStatus = false;
 	public static boolean countdownStatus = false;
+	public static boolean pause = false;
 	
 	public static int day = 0;
 	public static int teamReady = 0;
+	public static int votePause = 0;
 	
 	public static File configFile;
     public static FileConfiguration config;

@@ -2,6 +2,8 @@ package com.fk.command;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -20,7 +22,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 		
 		Player p = (Player) sender;
 		
-		if(Main.gameSetup && !Main.gameStatus) {
+		if(Main.gameSetup && !Main.gameStatus && p.isOp()) {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE+"Your server is setup and ready to play !\nDelete "+ChatColor.WHITE+"config.yml"+ChatColor.LIGHT_PURPLE+" and reload the server to start a new setup !");
 		} else if(sender.isOp() && !Main.gameStatus) {
 			
@@ -38,6 +40,11 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					Main.gameSetup = true;
 					sender.sendMessage(ChatColor.GREEN+"Your server is now setup !\nYou can start to play when you want !\nGood luck.\n");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE+"\nYou have to disconnect and reconnect to start playing.");
+					for(Player p1 : Bukkit.getOnlinePlayers()) {
+						if(!p1.equals(p)) {
+							p1.kickPlayer("An admin has just start the FallenKingdom.");
+						}
+					}
 				}
 				
 				else if(args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("lobby")){
@@ -104,15 +111,24 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fk spawn : Setup the spawn ("+spawnStatusColor+ChatColor.LIGHT_PURPLE+")\n/fk lobby : Change lobby spawns ("+lobbyStatusColor+ChatColor.LIGHT_PURPLE+")\n");
 				sender.sendMessage(ChatColor.BLUE + "====================================");
 			}
-		} else if(Main.gameStatus) {
+		} else if(Main.gameStatus && Main.day>=1) {
 			if(args.length==1) {
 				if(args[0].equalsIgnoreCase("setbase")) {
-					Player s = (Player) sender;
-					if(Main.teamLeader.get(Main.getPlayerTeam(s)).getName().equals(sender.getName())) {
-						Main.teamBase.put(Main.getPlayerTeam(s), s.getLocation());
-						sender.sendMessage("You succesfully set your base in "+s.getLocation().getBlockX()+" "+s.getLocation().getBlockY()+" "+s.getLocation().getBlockZ());
+					if(Main.teamLeader.get(Main.getPlayerTeam(p)).getName().equals(sender.getName())) {
+						Main.teamBase.put(Main.getPlayerTeam(p), p.getLocation());
+						sender.sendMessage("You succesfully set your base in "+p.getLocation().getBlockX()+" "+p.getLocation().getBlockY()+" "+p.getLocation().getBlockZ());
 					} else {
-						sender.sendMessage(Main.teamLeader.get(Main.getPlayerTeam(s)).getName()+ChatColor.RED+" is the team leader, he has to setup your base !");
+						sender.sendMessage(Main.teamLeader.get(Main.getPlayerTeam(p)).getName()+ChatColor.RED+" is the team leader, he has to setup your base !");
+					}
+				} else if(args[0].equalsIgnoreCase("pause")) {
+					if(Main.vote.get(p)) {
+						p.sendMessage(ChatColor.RED+"You already vote for a pause.");
+						return true;
+					}
+					Main.votePause++;
+					Main.vote.put(p, true);
+					if(Main.votePause==1) {
+						Bukkit.broadcastMessage(p.getName()+ChatColor.LIGHT_PURPLE+" asked for a pause. Use "+ChatColor.WHITE+"/fk pause"+ChatColor.LIGHT_PURPLE+" if you agree.");
 					}
 				}
 			}
