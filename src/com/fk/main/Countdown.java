@@ -75,6 +75,7 @@ public class Countdown extends JavaPlugin{
                 				time=0;
                 				Main.pause = true;
                 				Main.votePause=0;
+                				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle false");
                 			}
             				if(time == 15||(time<=5 && time>0)) {
                 				Bukkit.broadcastMessage(ChatColor.GREEN+"You have "+ChatColor.WHITE+time+ChatColor.GREEN+" seconds to vote.");
@@ -98,6 +99,7 @@ public class Countdown extends JavaPlugin{
             					Bukkit.broadcastMessage(ChatColor.WHITE+""+time);
             				} else if(time==0) {
             					Main.pause=false;
+            					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle true");
             					for (Player p : Bukkit.getServer().getOnlinePlayers()){
             						Main.vote.put(p, false);
                     			}
