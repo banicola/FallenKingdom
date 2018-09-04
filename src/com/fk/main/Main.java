@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.fk.command.FkCommand;
 import com.fk.event.EntityEvent;
 import com.fk.event.NewDayEvent;
+import com.fk.event.PlayerBuildEvent;
 import com.fk.event.PlayerDropEvent;
 import com.fk.event.PlayerFoodEvent;
 import com.fk.event.PlayerHealthEvent;
@@ -70,6 +71,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerLeaveEvent(), this);
         pm.registerEvents(new PlayerDropEvent(), this);
         pm.registerEvents(new PlayerMoveLaunch(), this);
+        pm.registerEvents(new PlayerBuildEvent(), this);
         pm.registerEvents(new NewDayEvent(), this);
         pm.registerEvents(new EntityEvent(), this);
         pm.registerEvents(new PortalEvent(), this);
