@@ -46,7 +46,7 @@ public class PlayerInventoryClick implements Listener{
 			e.setCancelled(true);
 			if(p.getInventory().getHeldItemSlot() == 4){
 				TeamMenu.teamMenuDisplay(p);
-			} else if(p.getInventory().getHeldItemSlot() == 8){
+			} else if(p.getInventory().getHeldItemSlot() == 8 && p.getInventory().getItem(8) != null){
 				if(p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("Not Ready")) {
 					ItemStack ready = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
 					ItemMeta meta2 = (ItemMeta) ready.getItemMeta();
