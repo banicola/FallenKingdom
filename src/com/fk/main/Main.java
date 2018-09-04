@@ -27,6 +27,7 @@ import com.fk.event.PlayerJoinedEvent;
 import com.fk.event.PlayerLeaveEvent;
 import com.fk.event.PlayerMoveLaunch;
 import com.fk.event.PlayerNewLoginEvent;
+import com.fk.event.PortalEvent;
 
 public class Main extends JavaPlugin{
 	
@@ -67,6 +68,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerMoveLaunch(), this);
         pm.registerEvents(new NewDayEvent(), this);
         pm.registerEvents(new EntityEvent(), this);
+        pm.registerEvents(new PortalEvent(), this);
         
 		CommandExecutor fallenkingdomExecutor = new FkCommand();
     	getCommand("fallenkingdom").setExecutor(fallenkingdomExecutor);
