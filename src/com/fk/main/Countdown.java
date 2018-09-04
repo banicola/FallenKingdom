@@ -64,29 +64,47 @@ public class Countdown extends JavaPlugin{
             					
             				}
             			}
-            		} else{
-            			if(Main.votePause>=Bukkit.getServer().getOnlinePlayers().size()/2) {
-            				time=0;
-            				Main.pause = true;
-            				Main.votePause=0;
-            			}
-            			if(time == 15||(time<=5 && time>0)) {
-            				Bukkit.broadcastMessage(ChatColor.GREEN+"You have "+ChatColor.WHITE+time+ChatColor.GREEN+" seconds to vote.");
-            			} else if(time == 0) {
-            				String s = "against";
-            				if(Main.pause) {
-            					s = "for";
-            				}
-            				Bukkit.broadcastMessage(ChatColor.GREEN+"You voted "+ChatColor.WHITE+s+ChatColor.GREEN+" a pause.");
-            				Bukkit.getScheduler().cancelTask(TaskID);
-            				Pause.PauseCountdown();
-            			}
-            			
+            		} else {
             			for (Player p : Bukkit.getServer().getOnlinePlayers()){
             				if(time <= 5){
             					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
             				}
             			}
+            			if(!Main.pause) {
+            				if(Main.votePause>=Bukkit.getServer().getOnlinePlayers().size()/2) {
+                				time=0;
+                				Main.pause = true;
+                				Main.votePause=0;
+                			}
+            				if(time == 15||(time<=5 && time>0)) {
+                				Bukkit.broadcastMessage(ChatColor.GREEN+"You have "+ChatColor.WHITE+time+ChatColor.GREEN+" seconds to vote.");
+                			} else if(time == 0) {
+                				String s = "against";
+                				if(Main.pause) {
+                					s = "for";
+                				}
+                				Bukkit.broadcastMessage(ChatColor.GREEN+"You voted "+ChatColor.WHITE+s+ChatColor.GREEN+" a pause.");
+                				Bukkit.getScheduler().cancelTask(TaskID);
+                				if(Main.pause) {
+                					Pause.PauseCountdown();
+                				}
+                			}
+            			} else {
+            				if(time==30) {
+            					Bukkit.broadcastMessage(ChatColor.GREEN+"You still have "+ChatColor.WHITE+time+ChatColor.GREEN+" seconds of pause.");
+            				} else if(time==10) {
+            					Bukkit.broadcastMessage(ChatColor.GREEN+"The pause end in "+ChatColor.WHITE+time);
+            				} else if(time<10 && time>0) {
+            					Bukkit.broadcastMessage(ChatColor.WHITE+""+time);
+            				} else if(time==0) {
+            					Main.pause=false;
+            					for (Player p : Bukkit.getServer().getOnlinePlayers()){
+            						Main.vote.put(p, false);
+                    			}
+            					Bukkit.getScheduler().cancelTask(TaskID);
+            				}
+            			}
+            			
             		}
         			time--;
             	}

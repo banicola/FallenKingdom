@@ -10,7 +10,7 @@ public class PlayerMoveLaunch implements Listener{
 	@EventHandler
 	public void playerMoveEvent(PlayerMoveEvent e) {
 		
-		if(Main.gameStatus && Main.day == 0){
+		if((Main.gameStatus && Main.day == 0)||Main.pause){
 			e.setCancelled(true);
 		}
 	}
