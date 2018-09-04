@@ -2,7 +2,6 @@ package com.fk.command;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -18,11 +17,14 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		Player p = (Player) sender;
+		
 		if(Main.gameSetup && !Main.gameStatus) {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE+"Your server is setup and ready to play !\nDelete "+ChatColor.WHITE+"config.yml"+ChatColor.LIGHT_PURPLE+" and reload the server to start a new setup !");
 		} else if(sender.isOp() && !Main.gameStatus) {
 			
-			Player p = (Player) sender;
+			
 			Location l = p.getLocation();
 			int x = l.getBlockX(), y= l.getBlockY(), z = l.getBlockZ();
 			

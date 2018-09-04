@@ -25,8 +25,10 @@ public class Countdown extends JavaPlugin{
             	if(time >= 0){
             		if(time == 0 && !Main.gameStatus) {
             			for(String t : Main.teams) {
-            				int idx = new Random().nextInt(Main.playersTeam.get(t).size());
-            				Main.teamLeader.put(t, Main.playersTeam.get(t).get(idx));
+            				if(Main.playersTeam.get(t).size()!=0) {
+            					int idx = new Random().nextInt(Main.playersTeam.get(t).size());
+                				Main.teamLeader.put(t, Main.playersTeam.get(t).get(idx));
+            				}
             			}
             		}
             		for (Player p : Bukkit.getServer().getOnlinePlayers()){
