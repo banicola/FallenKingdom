@@ -1,5 +1,7 @@
 package com.fk.main;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -21,6 +23,12 @@ public class Countdown extends JavaPlugin{
             @Override
             public void run() {
             	if(time >= 0){
+            		if(time == 0 && !Main.gameStatus) {
+            			for(String t : Main.teams) {
+            				int idx = new Random().nextInt(Main.playersTeam.get(t).size());
+            				Main.teamLeader.put(t, Main.playersTeam.get(t).get(idx));
+            			}
+            		}
             		for (Player p : Bukkit.getServer().getOnlinePlayers()){
             			if(Main.getPlayerTeam(p) == null && Main.gameStatus) {
             				p.kickPlayer("Sorry, you were not in a team when the game launched !");
@@ -44,6 +52,7 @@ public class Countdown extends JavaPlugin{
         						p.teleport(spawn);
         						p.getInventory().clear();
         						p.setGameMode(GameMode.SURVIVAL);
+        						p.sendMessage(ChatColor.BLUE+"The "+ChatColor.WHITE+Main.getPlayerTeam(p)+ChatColor.BLUE+" team leader is "+ChatColor.WHITE+Main.teamLeader.get(Main.getPlayerTeam(p))+ChatColor.BLUE+" !");
         						Main.gameStatus = true;
         						Bukkit.getScheduler().cancelTask(TaskID);
         						StartGame.LauchGame();

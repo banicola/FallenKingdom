@@ -14,6 +14,8 @@ import com.fk.main.Main;
 import com.fk.main.StartGame;
 import com.fk.main.TeamMenu;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class PlayerInventoryClick implements Listener{
 	@EventHandler
 	public void playerInventoryClick(InventoryClickEvent e) {
@@ -102,6 +104,11 @@ public class PlayerInventoryClick implements Listener{
 						
 					}
 				}
+			}
+		} else if (Main.gameStatus) {
+			if((e.getPlayer().getLocation().getBlockX()>=Main.config.getInt("spawn.x")-100 && e.getPlayer().getLocation().getBlockX()<=Main.config.getInt("spawn.x")+100) && (e.getPlayer().getLocation().getBlockZ()>=Main.config.getInt("spawn.z")-100) && e.getPlayer().getLocation().getBlockZ()<=Main.config.getInt("spawn.z")+100) {
+				e.setCancelled(true);
+				e.getPlayer().sendMessage(ChatColor.RED+"You aren't far enough of the spawn, go further !");
 			}
 		}
 	}

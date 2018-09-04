@@ -18,11 +18,9 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(Main.gameSetup) {
+		if(Main.gameSetup && !Main.gameStatus) {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE+"Your server is setup and ready to play !\nDelete "+ChatColor.WHITE+"config.yml"+ChatColor.LIGHT_PURPLE+" and reload the server to start a new setup !");
-			return true;
-		}
-		if(sender.isOp()) {
+		} else if(sender.isOp() && !Main.gameStatus) {
 			
 			Player p = (Player) sender;
 			Location l = p.getLocation();
@@ -38,7 +36,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 					Main.gameSetup = true;
 					sender.sendMessage(ChatColor.GREEN+"Your server is now setup !\nYou can start to play when you want !\nGood luck.\n");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE+"\nYou have to disconnect and reconnect to start playing.");
-				} 
+				}
 				
 				else if(args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("lobby")){
 					if(args.length == 1){
@@ -103,6 +101,18 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 				}
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fk spawn : Setup the spawn ("+spawnStatusColor+ChatColor.LIGHT_PURPLE+")\n/fk lobby : Change lobby spawns ("+lobbyStatusColor+ChatColor.LIGHT_PURPLE+")\n");
 				sender.sendMessage(ChatColor.BLUE + "====================================");
+			}
+		} else if(Main.gameStatus) {
+			if(args.length==1) {
+				if(args[0].equalsIgnoreCase("setbase")) {
+					Player s = (Player) sender;
+					if(Main.teamLeader.get(Main.getPlayerTeam(s)).getName().equals(sender.getName())) {
+						Main.teamBase.put(Main.getPlayerTeam(s), s.getLocation());
+						sender.sendMessage("You succesfully set your base in "+s.getLocation().getBlockX()+" "+s.getLocation().getBlockY()+" "+s.getLocation().getBlockZ());
+					} else {
+						sender.sendMessage(Main.teamLeader.get(Main.getPlayerTeam(s)).getName()+ChatColor.RED+" is the team leader, he has to setup your base !");
+					}
+				}
 			}
 		}
 		return true;

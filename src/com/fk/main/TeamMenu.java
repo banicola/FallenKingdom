@@ -54,10 +54,15 @@ public class TeamMenu extends JavaPlugin{
 			try {
 				String pTeam = Main.getPlayerTeam(p);
 				Main.playersTeam.get(pTeam).remove(p);
+				for(Player p1 : Main.playersTeam.get(pTeam)) {
+					p1.sendMessage(ChatColor.WHITE+p.getName()+ChatColor.BLUE+" left your team !");
+				}
 			} catch(Exception e) {
 				
 			}
-			
+			for(Player p1 : Main.playersTeam.get(team)) {
+				p1.sendMessage(ChatColor.WHITE+p.getName()+ChatColor.BLUE+" joined your team !");
+			}
 			Main.playersTeam.get(team).add(p);
 			if(team.equals("RED")) {
 				joinTeam = new ItemStack(Material.RED_WOOL, 1);

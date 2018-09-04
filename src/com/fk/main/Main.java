@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,6 +35,8 @@ public class Main extends JavaPlugin{
 	
 	public static ArrayList<String> teams = new ArrayList<String>();
 	public static HashMap<String, Boolean> teamStatus = new HashMap<String, Boolean>();
+	public static HashMap<String, Player> teamLeader = new HashMap<String, Player>();
+	public static HashMap<String, Location> teamBase = new HashMap<String, Location>();
 	
 	public static boolean gameSetup = false;
 	public static boolean gameStatus = false;
