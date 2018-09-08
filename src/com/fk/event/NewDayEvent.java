@@ -20,7 +20,9 @@ public class NewDayEvent implements Listener{
 		long time = e.getWorld().getTime();
 		if(time==0 && Main.day>=1) {
 			Main.day++;
-			Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE+"Day "+ChatColor.GREEN+Main.day);
+			if(Main.day>1) {
+				Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE+"Day "+ChatColor.GREEN+Main.day);
+			}
 		}
 		if(Main.day==1 && time==22800) {
 			for(String team : Main.teams) {

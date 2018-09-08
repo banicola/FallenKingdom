@@ -22,6 +22,7 @@ public class Countdown extends JavaPlugin{
         TaskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Bukkit.getServer().getPluginManager().getPlugin("FallenKingdom"), new Runnable() {
             @Override
             public void run() {
+            	Location spawn = new Location(Bukkit.getServer().getWorld(Main.config.getString("world")), Main.config.getInt("spawn.x"), Main.config.getInt("spawn.y"), Main.config.getInt("spawn.z"));
             	if(time >= 0){
             		if(!Main.pause||Main.votePause==0) {
             			if(time == 0 && !Main.gameStatus) {
@@ -32,6 +33,20 @@ public class Countdown extends JavaPlugin{
                 				}
                 			}
                 		}
+            			if(!Main.countdownStatus) {
+        					Bukkit.getScheduler().cancelTask(TaskID);
+        				}
+        				if(time == 0){
+        					if(Main.gameStatus) {
+        						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle true");
+        						Main.day=1;
+        						Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE+"Day "+ChatColor.GREEN+Main.day);
+        					} else {
+        						Main.gameStatus = true;
+        						Bukkit.getScheduler().cancelTask(TaskID);
+        						StartGame.LauchGame();
+        					}
+        				}
                 		for (Player p : Bukkit.getServer().getOnlinePlayers()){
                 			if(Main.getPlayerTeam(p) == null && Main.gameStatus) {
                 				p.kickPlayer("Sorry, you were not in a team when the game launched !");
@@ -39,7 +54,6 @@ public class Countdown extends JavaPlugin{
             				p.setLevel(time);
             				if(!Main.countdownStatus) {
             					p.setLevel(0);
-            					Bukkit.getScheduler().cancelTask(TaskID);
             				}
             				if(time <= 5 && !Main.gameStatus){
             					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
@@ -47,21 +61,14 @@ public class Countdown extends JavaPlugin{
             				if(time == 0){
             					if(Main.gameStatus) {
             						p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 10, 1);
-            						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle true");
-            						Main.day=1;
-            						Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE+"Day "+ChatColor.GREEN+Main.day);
             					} else {
-            						Location spawn = new Location(Bukkit.getServer().getWorld(Main.config.getString("world")), Main.config.getInt("spawn.x"), Main.config.getInt("spawn.y"), Main.config.getInt("spawn.z"));
+            						
             						p.teleport(spawn);
+            						p.setGameMode(GameMode.SURVIVAL);
             						p.getInventory().clear();
             						Main.vote.put(p, false);
-            						p.setGameMode(GameMode.SURVIVAL);
             						p.sendMessage(ChatColor.BLUE+"The "+ChatColor.WHITE+Main.getPlayerTeam(p)+ChatColor.BLUE+" team leader is "+ChatColor.WHITE+Main.teamLeader.get(Main.getPlayerTeam(p))+ChatColor.BLUE+" !");
-            						Main.gameStatus = true;
-            						Bukkit.getScheduler().cancelTask(TaskID);
-            						StartGame.LauchGame();
             					}
-            					
             				}
             			}
             		} else {

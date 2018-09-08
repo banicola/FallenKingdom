@@ -7,17 +7,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.fk.main.Main;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class PlayerLeaveEvent implements Listener{
 	@EventHandler
 	public void PlayerQuitEvent(PlayerQuitEvent e) {
+		Player p = e.getPlayer();
+		
 		if(!Main.gameStatus) {
 			try {
-				Player p = e.getPlayer();
 				Main.playersTeam.get(Main.getPlayerTeam(p)).remove(p);
 				Main.playerStatus.remove(p);
 			} catch(Exception exception) {
 				
 			}
+		} else {
+			e.setQuitMessage(ChatColor.YELLOW+p.getName()+" left the game. (Team "+ChatColor.WHITE+Main.getPlayerTeam(p)+ChatColor.YELLOW+")");
 		}
 	}
 }
