@@ -14,8 +14,6 @@ import com.fk.main.Main;
 import com.fk.main.StartGame;
 import com.fk.main.TeamMenu;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class PlayerInventoryClick implements Listener{
 	@EventHandler
 	public void playerInventoryClick(InventoryClickEvent e) {
@@ -35,8 +33,6 @@ public class PlayerInventoryClick implements Listener{
 	  		  		TeamMenu.chooseTeamPlayer(p, "YELLOW");
 	  		  	}
 			}
-		} else if(Main.gameStatus && Main.day!=0) {
-			e.setCancelled(false);
 		}
 	}
 	
@@ -60,17 +56,22 @@ public class PlayerInventoryClick implements Listener{
 					
 					if(!Main.teamStatus.get(Main.getPlayerTeam(p))) {
 						int totalReady = 0;
-						for(Player player : Main.playersTeam.get(Main.getPlayerTeam(p))) {
-							if(Main.playerStatus.get(player)) {
-								totalReady++;
+						Main.teamReady = 0;
+						for(String team : Main.teams) {
+							if(!Main.playersTeam.get(team).isEmpty()) {
+								
+								for(Player player : Main.playersTeam.get(team)) {
+									if(Main.playerStatus.get(player)) {
+										totalReady++;
+									}
+								}
+								if(totalReady>=Main.config.getInt("min_team")) {
+									Main.teamStatus.put(Main.getPlayerTeam(p), true);
+									Main.teamReady++;
+								}
 							}
 						}
-						if(totalReady>=Main.config.getInt("min_team")) {
-							Main.teamStatus.put(Main.getPlayerTeam(p), true);
-							Main.teamReady++;
-						}
 					}
-					
 					if(!Main.countdownStatus) {
 						if(Main.teamReady>=2) {
 							StartGame.LobbyCountdown();
@@ -87,28 +88,27 @@ public class PlayerInventoryClick implements Listener{
 					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
 					Main.playerStatus.put(p, false);
 					int totalReady = 0;
-					for(Player player : Main.playersTeam.get(Main.getPlayerTeam(p))) {
-						if(Main.playerStatus.get(player)) {
-							totalReady++;
+					Main.teamReady = 0;
+					for(String team : Main.teams) {
+						if(!Main.playersTeam.get(team).isEmpty()) {
+							for(Player player : Main.playersTeam.get(team)) {
+								if(Main.playerStatus.get(player)) {
+									totalReady++;
+								}
+							}
+							if(totalReady<Main.config.getInt("min_team")) {
+								Main.teamReady--;
+								Main.teamStatus.put(team, false);
+							}
 						}
-					}
-					if(totalReady<Main.config.getInt("min_team")) {
-						Main.teamReady--;
 					}
 					
 					if(Main.countdownStatus) {
 						if(Main.teamReady<2) {
-							StartGame.LobbyCountdown();
 							Main.countdownStatus = false;
 						}
-						
 					}
 				}
-			}
-		} else if (Main.gameStatus) {
-			if((e.getPlayer().getLocation().getBlockX()>=Main.config.getInt("spawn.x")-100 && e.getPlayer().getLocation().getBlockX()<=Main.config.getInt("spawn.x")+100) && (e.getPlayer().getLocation().getBlockZ()>=Main.config.getInt("spawn.z")-100) && e.getPlayer().getLocation().getBlockZ()<=Main.config.getInt("spawn.z")+100) {
-				e.setCancelled(true);
-				e.getPlayer().sendMessage(ChatColor.RED+"You aren't far enough of the spawn, go further !");
 			}
 		}
 	}

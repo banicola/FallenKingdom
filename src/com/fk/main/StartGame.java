@@ -1,5 +1,10 @@
 package com.fk.main;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class StartGame extends JavaPlugin{
@@ -9,6 +14,16 @@ public class StartGame extends JavaPlugin{
 	}
 	public static void LauchGame(){
 		Countdown.CountdownStart(5);
+	}
+	public static void PlayerSetup() {
+		Location spawn = new Location(Bukkit.getServer().getWorld(Main.config.getString("world")), Main.config.getInt("spawn.x"), Main.config.getInt("spawn.y"), Main.config.getInt("spawn.z"));
+		for (Player p : Bukkit.getServer().getOnlinePlayers()){
+			p.teleport(spawn);
+			p.setGameMode(GameMode.SURVIVAL);
+			p.getInventory().clear();
+			Main.vote.put(p, false);
+			p.sendMessage(ChatColor.BLUE+"The "+ChatColor.WHITE+Main.getPlayerTeam(p)+ChatColor.BLUE+" team leader is "+ChatColor.WHITE+Main.teamLeader.get(Main.getPlayerTeam(p)).getName()+ChatColor.BLUE+" !");
+		}		
 	}
 
 }
