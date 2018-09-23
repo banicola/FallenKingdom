@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.fk.main.Main;
-import com.fk.main.StartGame;
 import com.fk.main.TeamMenu;
+import com.fk.main.TeamReadyCheck;
 
 public class PlayerInventoryClick implements Listener{
 	@EventHandler
@@ -53,31 +53,7 @@ public class PlayerInventoryClick implements Listener{
 					
 					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
 					Main.playerStatus.put(p, true);
-					
-					if(!Main.teamStatus.get(Main.getPlayerTeam(p))) {
-						int totalReady = 0;
-						Main.teamReady = 0;
-						for(String team : Main.teams) {
-							if(!Main.playersTeam.get(team).isEmpty()) {
-								
-								for(Player player : Main.playersTeam.get(team)) {
-									if(Main.playerStatus.get(player)) {
-										totalReady++;
-									}
-								}
-								if(totalReady>=Main.config.getInt("min_team")) {
-									Main.teamStatus.put(Main.getPlayerTeam(p), true);
-									Main.teamReady++;
-								}
-							}
-						}
-					}
-					if(!Main.countdownStatus) {
-						if(Main.teamReady>=2) {
-							StartGame.LobbyCountdown();
-							Main.countdownStatus = true;
-						}
-					}
+					TeamReadyCheck.isTeamReady(p);
 					
 				} else if(p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("Ready")) {
 					ItemStack ready = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
@@ -87,27 +63,7 @@ public class PlayerInventoryClick implements Listener{
 					
 					Bukkit.getServer().getPlayer(p.getName()).getInventory().setItem(8, ready);
 					Main.playerStatus.put(p, false);
-					int totalReady = 0;
-					Main.teamReady = 0;
-					for(String team : Main.teams) {
-						if(!Main.playersTeam.get(team).isEmpty()) {
-							for(Player player : Main.playersTeam.get(team)) {
-								if(Main.playerStatus.get(player)) {
-									totalReady++;
-								}
-							}
-							if(totalReady<Main.config.getInt("min_team")) {
-								Main.teamReady--;
-								Main.teamStatus.put(team, false);
-							}
-						}
-					}
-					
-					if(Main.countdownStatus) {
-						if(Main.teamReady<2) {
-							Main.countdownStatus = false;
-						}
-					}
+					TeamReadyCheck.isTeamReady(p);
 				}
 			}
 		}

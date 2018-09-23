@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -95,9 +96,7 @@ public class Main extends JavaPlugin{
     		gameSetup = true;
     	}
     	
-    	Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doDaylightCycle false");
-		Bukkit.getServer().getWorld(Main.config.getString("world")).setTime(0);
-		Bukkit.getServer().getWorld(Main.config.getString("world")).setStorm(false);
+    	setupWorld();
 	}
 
 	public void onDisable(){
@@ -115,6 +114,12 @@ public class Main extends JavaPlugin{
         }
         loadFiles();
     }
+	
+	private void setupWorld() {
+		Bukkit.getServer().getWorld(Main.config.getString("world")).setFullTime(0);
+		Bukkit.getServer().getWorld(Main.config.getString("world")).setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+		Bukkit.getServer().getWorld(Main.config.getString("world")).setStorm(false);
+	}
 	
 	public static void loadFiles(){
 		config = new YamlConfiguration();

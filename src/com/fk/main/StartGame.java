@@ -10,10 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class StartGame extends JavaPlugin{
 	
 	public static void LobbyCountdown(){
-		Countdown.CountdownStart(15);
+		Countdown.CountdownStart(15, false);
 	}
 	public static void LauchGame(){
-		Countdown.CountdownStart(5);
+		Countdown.CountdownStart(5, false);
+	}
+	public static void inGame() {
+		Countdown.CountdownStart(1, true);
 	}
 	public static void PlayerSetup() {
 		Location spawn = new Location(Bukkit.getServer().getWorld(Main.config.getString("world")), Main.config.getInt("spawn.x"), Main.config.getInt("spawn.y"), Main.config.getInt("spawn.z"));

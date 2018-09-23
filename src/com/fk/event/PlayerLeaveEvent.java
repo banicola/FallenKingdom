@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.fk.main.Main;
+import com.fk.main.TeamReadyCheck;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -16,6 +17,9 @@ public class PlayerLeaveEvent implements Listener{
 		
 		if(!Main.gameStatus) {
 			try {
+				
+				Main.playerStatus.put(p, false);
+				TeamReadyCheck.isTeamReady(p);
 				Main.playersTeam.get(Main.getPlayerTeam(p)).remove(p);
 				Main.playerStatus.remove(p);
 			} catch(Exception exception) {

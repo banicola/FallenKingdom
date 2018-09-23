@@ -13,6 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import com.fk.main.CreateGameConfig;
+import com.fk.main.DistancePlayerLocation;
 import com.fk.main.Main;
 
 public class FkCommand implements CommandExecutor, TabCompleter{
@@ -115,6 +116,10 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 			if(args.length==1) {
 				if(args[0].equalsIgnoreCase("setbase")) {
 					if(Main.teamLeader.get(Main.getPlayerTeam(p)).getName().equals(sender.getName())) {
+						if(DistancePlayerLocation.distancePlayerSpawn(p)<Main.config.getInt("spawn_protection")+15) {
+							p.sendMessage(ChatColor.RED+"You are too close from the spawn, go forward!");
+							return true;
+						}
 						Main.teamBase.put(Main.getPlayerTeam(p), p.getLocation());
 						sender.sendMessage("You succesfully set your base in "+p.getLocation().getBlockX()+" "+p.getLocation().getBlockY()+" "+p.getLocation().getBlockZ());
 					} else {
@@ -140,20 +145,26 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		if(cmd.getName().equalsIgnoreCase("fk") || cmd.getName().equalsIgnoreCase("fallenkingdom")) {
 			ArrayList<String> commandList = new ArrayList<String>();
-			if(args.length == 1){
-				if(Main.spawnStatus && Main.lobbyStatus) {
-					commandList.add("start");
-				}
-				commandList.add("spawn");
-				commandList.add("lobby");
-				ArrayList<String> commandFound = new ArrayList<String>();
-				for(String s: commandList) {
-					if(s.toLowerCase().startsWith(args[0].toLowerCase())){
-						commandFound.add(s);
+			if(!Main.gameStatus) {
+				if(args.length == 1){
+					if(Main.spawnStatus && Main.lobbyStatus) {
+						commandList.add("start");
 					}
+					commandList.add("spawn");
+					commandList.add("lobby");
 				}
-				return commandFound;
+			} else {
+				if(args.length == 1){
+					commandList.add("setbase");
+				}
 			}
+			ArrayList<String> commandFound = new ArrayList<String>();
+			for(String s: commandList) {
+				if(s.toLowerCase().startsWith(args[0].toLowerCase())){
+					commandFound.add(s);
+				}
+			}
+			return commandFound;
 		}
 		return new ArrayList<String>();
 	}
