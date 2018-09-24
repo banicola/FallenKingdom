@@ -9,6 +9,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,7 +28,7 @@ import com.fk.event.PlayerHealthEvent;
 import com.fk.event.PlayerInventoryClick;
 import com.fk.event.PlayerJoinedEvent;
 import com.fk.event.PlayerLeaveEvent;
-import com.fk.event.PlayerMoveLaunch;
+import com.fk.event.PlayerMove;
 import com.fk.event.PlayerNewLoginEvent;
 import com.fk.event.PortalEvent;
 
@@ -40,6 +41,8 @@ public class Main extends JavaPlugin{
 	public static HashMap<String, Boolean> teamStatus = new HashMap<String, Boolean>();
 	public static HashMap<String, Player> teamLeader = new HashMap<String, Player>();
 	public static HashMap<String, Location> teamBase = new HashMap<String, Location>();
+	
+	public static HashMap<Player, Boolean> playerInBase = new HashMap<Player, Boolean>();
 	
 	public static HashMap<Player, Boolean> vote = new HashMap<Player, Boolean>();
 	
@@ -71,7 +74,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerInventoryClick(), this);
         pm.registerEvents(new PlayerLeaveEvent(), this);
         pm.registerEvents(new PlayerDropEvent(), this);
-        pm.registerEvents(new PlayerMoveLaunch(), this);
+        pm.registerEvents(new PlayerMove(), this);
         pm.registerEvents(new PlayerBuildEvent(), this);
         pm.registerEvents(new NewDayEvent(), this);
         pm.registerEvents(new EntityEvent(), this);
@@ -116,11 +119,12 @@ public class Main extends JavaPlugin{
     }
 	
 	private void setupWorld() {
-		Bukkit.getServer().getWorld(Main.config.getString("world")).setFullTime(0);
-		Bukkit.getServer().getWorld(Main.config.getString("world")).setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-		Bukkit.getServer().getWorld(Main.config.getString("world")).setStorm(false);
+		World world= Bukkit.getWorld(Main.config.getString("world"));
+		world.setFullTime(0);
+		world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+		world.setStorm(false);		
 	}
-	
+    
 	public static void loadFiles(){
 		config = new YamlConfiguration();
         try {

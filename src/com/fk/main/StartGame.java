@@ -25,6 +25,7 @@ public class StartGame extends JavaPlugin{
 			p.setGameMode(GameMode.SURVIVAL);
 			p.getInventory().clear();
 			Main.vote.put(p, false);
+			Main.playerInBase.put(p, false);
 			p.sendMessage(ChatColor.BLUE+"The "+ChatColor.WHITE+Main.getPlayerTeam(p)+ChatColor.BLUE+" team leader is "+ChatColor.WHITE+Main.teamLeader.get(Main.getPlayerTeam(p)).getName()+ChatColor.BLUE+" !");
 		}		
 	}

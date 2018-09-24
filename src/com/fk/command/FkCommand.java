@@ -121,7 +121,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 							return true;
 						}
 						Main.teamBase.put(Main.getPlayerTeam(p), p.getLocation());
-						sender.sendMessage("You succesfully set your base in "+p.getLocation().getBlockX()+" "+p.getLocation().getBlockY()+" "+p.getLocation().getBlockZ());
+						sender.sendMessage(ChatColor.GREEN+"You succesfully set your base in "+ChatColor.WHITE+p.getLocation().getBlockX()+" "+p.getLocation().getBlockY()+" "+p.getLocation().getBlockZ());
 					} else {
 						sender.sendMessage(Main.teamLeader.get(Main.getPlayerTeam(p)).getName()+ChatColor.RED+" is the team leader, he has to setup your base !");
 					}
