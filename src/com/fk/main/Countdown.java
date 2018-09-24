@@ -17,17 +17,20 @@ public class Countdown extends JavaPlugin{
 	static int TaskID;
 	String game;
 	
-	public static void CountdownStart(int amount, boolean b) {
+	public static void CountdownStart(int amount, boolean started) {
         time = amount;
         
         TaskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Bukkit.getServer().getPluginManager().getPlugin("FallenKingdom"), new Runnable() {
             @SuppressWarnings("unused")
 			@Override
             public void run() {
-            	if(b) {
+            	if(started) {
             		time++;
             		if(time%1200==0) {
             			NewDayEvent.dayChangeEvent();
+            		}
+            		if(time==60) {
+            			Bukkit.getServer().broadcastMessage(ChatColor.LIGHT_PURPLE+String.format("[%s] Did you know? You can ask for a pause with: \n%s", ChatColor.WHITE+"FallenKingdom"+ChatColor.LIGHT_PURPLE, ChatColor.WHITE+"/fk pause"));
             		}
             	} else {
             		if(time >= 0){

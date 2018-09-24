@@ -28,6 +28,7 @@ public class StartGame extends JavaPlugin{
 			Main.playerInBase.put(p, false);
 			p.sendMessage(ChatColor.BLUE+"The "+ChatColor.WHITE+Main.getPlayerTeam(p)+ChatColor.BLUE+" team leader is "+ChatColor.WHITE+Main.teamLeader.get(Main.getPlayerTeam(p)).getName()+ChatColor.BLUE+" !");
 		}		
+		Bukkit.getServer().broadcastMessage(ChatColor.GOLD+String.format("[%s] Each team leader has to setup is base with: \n%s", ChatColor.WHITE+"FallenKingdom"+ChatColor.GOLD, ChatColor.WHITE+"/fk setbase"));
 	}
 
 }

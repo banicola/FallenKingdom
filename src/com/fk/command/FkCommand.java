@@ -155,6 +155,7 @@ public class FkCommand implements CommandExecutor, TabCompleter{
 				}
 			} else {
 				if(args.length == 1){
+					commandList.add("pause");
 					commandList.add("setbase");
 				}
 			}
