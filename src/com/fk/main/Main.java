@@ -104,7 +104,7 @@ public class Main extends JavaPlugin{
 
 	public void onDisable(){
 		for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-			p.kickPlayer("The plugin FallenKingdom has been reloaded !");
+			p.kickPlayer("Server shutdown. Come back later !");
 		}
 	}
 	
