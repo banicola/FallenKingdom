@@ -8,6 +8,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class TeamMenu extends JavaPlugin{
 	private static Inventory teamMenu = Bukkit.createInventory(null, 9, "Choose a team");
@@ -19,15 +21,18 @@ public class TeamMenu extends JavaPlugin{
 		meta1.setDisplayName("RED team");
 		RED.setItemMeta(meta1);
 		
+		
 		ItemStack BLUE = new ItemStack(Material.BLUE_WOOL, 1);
 		ItemMeta meta2 = (ItemMeta) BLUE.getItemMeta();
 		meta2.setDisplayName("BLUE team");
 		BLUE.setItemMeta(meta2);
 		
+		
 		ItemStack GREEN = new ItemStack(Material.GREEN_WOOL, 1);
 		ItemMeta meta3 = (ItemMeta) GREEN.getItemMeta();
 		meta3.setDisplayName("GREEN team");
 		GREEN.setItemMeta(meta3);
+		
 		
 		ItemStack YELLOW = new ItemStack(Material.YELLOW_WOOL, 1);
 		ItemMeta meta4 = (ItemMeta) YELLOW.getItemMeta();
@@ -41,6 +46,7 @@ public class TeamMenu extends JavaPlugin{
 		p.openInventory(teamMenu);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void chooseTeamPlayer(Player p, String team){
 		team = team.toUpperCase();
 		ItemStack joinTeam = p.getInventory().getItem(4);
@@ -54,6 +60,15 @@ public class TeamMenu extends JavaPlugin{
 			try {
 				String pTeam = Main.getPlayerTeam(p);
 				Main.playersTeam.get(pTeam).remove(p);
+				if(pTeam.equals("RED")) {
+					Main.redteam.removePlayer(p);
+				} else if(pTeam.equals("BLUE")) {
+					Main.blueteam.removePlayer(p);
+				} else if(pTeam.equals("GREEN")) {
+					Main.greenteam.removePlayer(p);
+				} else if(pTeam.equals("YELLOW")) {
+					Main.yellowteam.removePlayer(p);
+				}
 				for(Player p1 : Main.playersTeam.get(pTeam)) {
 					p1.sendMessage(ChatColor.WHITE+p.getName()+ChatColor.BLUE+" left your team !");
 				}
@@ -64,14 +79,19 @@ public class TeamMenu extends JavaPlugin{
 				p1.sendMessage(ChatColor.WHITE+p.getName()+ChatColor.BLUE+" joined your team !");
 			}
 			Main.playersTeam.get(team).add(p);
+			
 			if(team.equals("RED")) {
 				joinTeam = new ItemStack(Material.RED_WOOL, 1);
+				Main.redteam.addPlayer(p);
 			} else if(team.equals("BLUE")) {
 				joinTeam = new ItemStack(Material.BLUE_WOOL, 1);
+				Main.blueteam.addPlayer(p);
 			} else if(team.equals("GREEN")) {
 				joinTeam = new ItemStack(Material.GREEN_WOOL, 1);
+				Main.greenteam.addPlayer(p);
 			} else if(team.equals("YELLOW")) {
 				joinTeam = new ItemStack(Material.YELLOW_WOOL, 1);
+				Main.yellowteam.addPlayer(p);
 			}
 			p.sendMessage(ChatColor.BLUE+"You joined the "+ChatColor.WHITE+team+ChatColor.BLUE+" team !");
 		}

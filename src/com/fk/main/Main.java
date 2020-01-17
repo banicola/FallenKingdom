@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,11 +18,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import com.fk.command.FkCommand;
 import com.fk.event.EntityEvent;
 import com.fk.event.NewDayEvent;
 import com.fk.event.PlayerBuildEvent;
+import com.fk.event.PlayerChatEvent;
 import com.fk.event.PlayerDropEvent;
 import com.fk.event.PlayerFoodEvent;
 import com.fk.event.PlayerHealthEvent;
@@ -33,6 +37,8 @@ import com.fk.event.PlayerNewLoginEvent;
 import com.fk.event.PortalEvent;
 
 public class Main extends JavaPlugin{
+	
+	private static Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
 	
 	public static HashMap<String, List<Player>> playersTeam = new HashMap<String, List<Player>>();
 	public static HashMap<Player, Boolean> playerStatus = new HashMap<Player, Boolean>();
@@ -59,6 +65,11 @@ public class Main extends JavaPlugin{
 	
 	public static File configFile;
     public static FileConfiguration config;
+    
+    public static Team redteam;
+    public static Team blueteam;
+	public static Team greenteam;
+	public static Team yellowteam;
 
 	public static void main(String[] args) {}
 	
@@ -74,6 +85,7 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new PlayerInventoryClick(), this);
         pm.registerEvents(new PlayerLeaveEvent(), this);
         pm.registerEvents(new PlayerDropEvent(), this);
+        pm.registerEvents(new PlayerChatEvent(), this);
         pm.registerEvents(new PlayerMove(), this);
         pm.registerEvents(new PlayerBuildEvent(), this);
         pm.registerEvents(new NewDayEvent(), this);
@@ -88,6 +100,19 @@ public class Main extends JavaPlugin{
     	teams.add("BLUE");
     	teams.add("YELLOW");
     	
+    	for(Team t : sb.getTeams()) {
+    		t.unregister();
+    	}
+    	
+    	redteam = sb.registerNewTeam("REDTEAM");
+    	blueteam = sb.registerNewTeam("BLUETEAM");
+    	greenteam = sb.registerNewTeam("GREENTEAM");
+    	yellowteam = sb.registerNewTeam("YELLOWTEAM");
+    	redteam.setColor(ChatColor.RED);
+		blueteam.setColor(ChatColor.BLUE);
+		greenteam.setColor(ChatColor.GREEN);
+		yellowteam.setColor(ChatColor.YELLOW);
+    	
     	for(String team : teams) {
     		playersTeam.put(team, new ArrayList<Player>());
     		teamStatus.put(team, false);
@@ -98,7 +123,7 @@ public class Main extends JavaPlugin{
     		lobbyStatus = true;
     		gameSetup = true;
     	}
-    	
+
     	setupWorld();
 	}
 
